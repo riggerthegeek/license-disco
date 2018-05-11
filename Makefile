@@ -26,7 +26,7 @@ clean:
 .PHONY: clean
 
 install:
-	go get
+	dep ensure -v
 .PHONY: install
 
 run:
