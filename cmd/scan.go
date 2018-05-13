@@ -22,11 +22,16 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 
 	"github.com/riggerthegeek/license-disco/packages"
+	"github.com/riggerthegeek/license-disco/scanner"
 )
+
+// Gets the available package managers
+var pkgs = packages.LoadPackages()
 
 // scanCmd represents the scan command
 var scanCmd = &cobra.Command{
@@ -39,16 +44,23 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("scan called")
-		fmt.Println(cmd.Flags().Lookup("detect.npm").Value)
+		// @todo add in [path] to usage help
+		path := "./"
+		if len(args) > 0 {
+			path = args[0]
+		}
+
+		err := scanner.Scan(pkgs, cmd, path)
+
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(scanCmd)
-
-	// Gets the available package managers
-	pkgs := packages.LoadPackages()
 
 	// Output the flags from each available package
 	flagBuilder := scanCmd.Flags();
