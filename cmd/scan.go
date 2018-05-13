@@ -18,12 +18,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package main
+package cmd
 
 import (
-	"github.com/riggerthegeek/license-disco/cmd"
+	"fmt"
+
+	"github.com/spf13/cobra"
+
+	"github.com/riggerthegeek/license-disco/packages"
 )
 
-func main() {
-	cmd.Execute()
+// scanCmd represents the scan command
+var scanCmd = &cobra.Command{
+	Use:   "scan",
+	Short: "This will scan the project for license data",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("scan called")
+		fmt.Println(cmd.Flags().Lookup("detect.npm").Value)
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(scanCmd)
+
+	// Gets the available package managers
+	pkgs := packages.LoadPackages()
+
+	// Output the flags from each available package
+	flagBuilder := scanCmd.Flags();
+
+	for _, pkg := range pkgs {
+		// Get each of the flags and set with Cobra
+		for _, flag := range pkg.Flags() {
+
+			switch flag.Type {
+			case "Bool":
+				flagBuilder.Bool(flag.Name, flag.Value.(bool), flag.Usage)
+			}
+		}
+	}
 }
