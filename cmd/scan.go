@@ -25,9 +25,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"license-disco/scanner"
-
-	"license-disco/languages/javascript"
+	"github.com/riggerthegeek/license-disco/scanner"
+	"github.com/riggerthegeek/license-disco/languages/javascript"
 )
 
 //var d scanner.Scanner
@@ -56,7 +55,7 @@ func init() {
 
 	fmt.Println(languages.Javascript{})
 
-	d.RegisterLang(languages.Javascript{})
+	//d.RegisterLang(languages.Javascript{})
 
 	//scanner.RegisterLang()
 

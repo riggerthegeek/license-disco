@@ -21,7 +21,7 @@
 package main
 
 import (
-	"license-disco/cmd"
+	"github.com/riggerthegeek/license-disco/cmd"
 )
 
 func main() {
