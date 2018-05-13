@@ -25,13 +25,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/riggerthegeek/license-disco/scanner"
-	"github.com/riggerthegeek/license-disco/languages/javascript"
+	"github.com/riggerthegeek/license-disco/packages"
 )
-
-//var d scanner.Scanner
-
-var d = scanner.Scanner{}
 
 // scanCmd represents the scan command
 var scanCmd = &cobra.Command{
@@ -45,34 +40,27 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("scan called")
-		//fmt.Println(cmd.Flags().Lookup("detect.npm").Value)
-		fmt.Println(d)
+		fmt.Println(cmd.Flags().Lookup("detect.npm").Value)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(scanCmd)
 
-	fmt.Println(languages.Javascript{})
+	// Gets the available package managers
+	pkgs := packages.LoadPackages()
 
-	//d.RegisterLang(languages.Javascript{})
+	// Output the flags from each available package
+	flagBuilder := scanCmd.Flags();
 
-	//scanner.RegisterLang()
+	for _, pkg := range pkgs {
+		// Get each of the flags and set with Cobra
+		for _, flag := range pkg.Flags() {
 
-	//f := scanner.GetFlags()
-
-	//fmt.Println(f)
-	//fmt.Println(b)
-
-	//var s string = "Bool"
-
-	// Languages
-
-	// JavaScript
-	scanCmd.Flags().Bool("detect.npm", false, "Search for npm dependencies")
-	scanCmd.Flags().Bool("detect.bower", false, "Search for Bower dependencies")
-
-	// Python
-	scanCmd.Flags().Bool("detect.python", false, "Search for Python dependencies")
-	scanCmd.Flags().String("detect.python.requirements.path", "./requirements.txt", "The path of the requirements.txt file")
+			switch flag.Type {
+			case "Bool":
+				flagBuilder.Bool(flag.Name, flag.Value.(bool), flag.Usage)
+			}
+		}
+	}
 }
