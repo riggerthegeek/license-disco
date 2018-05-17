@@ -2,26 +2,18 @@ package packages
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/riggerthegeek/license-disco/npm"
+	"github.com/riggerthegeek/license-disco/common"
 )
 
 type Package interface {
 	Enabled(cmd *cobra.Command) bool
-	Flags() []Flag
-}
-
-type Flag struct {
-	Type string
-	Name string
-	Value interface{}
-	Usage string
+	Flags() []common.Flag
+	Scan(path string) (error, *string)
 }
 
 func LoadPackages() []Package {
 	return []Package{
-		&NPM{},
+		&npm.NPM{},
 	}
-}
-
-func (t *Flag) Twat()  {
-
 }

@@ -31,6 +31,12 @@
   version = "v1.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/kyoh86/go-spdx"
+  packages = ["spdx"]
+  revision = "25a1b2254a839772de41b01bbef19b1d05812e99"
+
+[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "c3beff4c2358b44d0493c7dda585e7db7ff28ae6"
@@ -121,6 +127,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "502ed800d6adfbf688650bd51cfa1f38d661360bdfd6a1d499b38bc4a37999fc"
+  inputs-digest = "caafbe7b0679688a5ba586e80ee6c0a97e7238d84a86592cb1c174f559409694"
   solver-name = "gps-cdcl"
   solver-version = 1
