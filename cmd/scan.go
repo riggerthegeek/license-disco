@@ -21,13 +21,13 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-
+	"strings"
 	"github.com/spf13/cobra"
 
 	"github.com/riggerthegeek/license-disco/packages"
 	"github.com/riggerthegeek/license-disco/scanner"
+	"fmt"
+	"os"
 )
 
 // Gets the available package managers
@@ -59,19 +59,26 @@ to quickly create a Cobra application.`,
 	},
 }
 
+func getFlagName (pkg packages.Package, name string) string {
+	pkgName := strings.ToLower(pkg.Name())
+
+	return pkgName + "." + name
+}
+
 func init() {
 	rootCmd.AddCommand(scanCmd)
 
 	// Output the flags from each available package
-	flagBuilder := scanCmd.Flags();
+	flagBuilder := scanCmd.Flags()
 
 	for _, pkg := range pkgs {
 		// Get each of the flags and set with Cobra
 		for _, flag := range pkg.Flags() {
+			flagName := getFlagName(pkg, flag.Name)
 
 			switch flag.Type {
 			case "Bool":
-				flagBuilder.Bool(flag.Name, flag.Value.(bool), flag.Usage)
+				flagBuilder.Bool(flagName, flag.Value.(bool), flag.Usage)
 			}
 		}
 	}

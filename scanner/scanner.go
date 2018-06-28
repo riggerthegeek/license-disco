@@ -4,28 +4,47 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/riggerthegeek/license-disco/packages"
+	"errors"
 	"path/filepath"
+	"os"
+	"fmt"
 )
 
 func Scan(pkgs []packages.Package, cmd *cobra.Command, path string) error {
-	//var activePkgs = []packages.Package{}
+	rootDir, err := filepath.Abs(path)
+	if err != nil {
+		return err
+	}
+
+	stat, err := os.Stat(rootDir)
+	if err != nil {
+		return err
+	}
+
+	if !stat.IsDir() {
+		return errors.New(path + " is not a directory")
+	}
+
+	var hasActive = false
 
 	for _, pkg := range pkgs {
 		if pkg.Enabled(cmd) {
-			// @todo check rootDir exists and is a directory
-			rootDir, err := filepath.Abs(path)
+			if hasActive == false {
+				hasActive = true
+			}
 
+			err, packages := pkg.Scan(rootDir)
 			if err != nil {
 				return err
 			}
 
-			pkg.Scan(rootDir)
+			fmt.Println(packages)
 		}
 	}
 
-	//if len(activePkgs) == 0 {
-	//	return errors.New("no scanners enabled")
-	//}
+	if hasActive == false {
+		return errors.New("NO_SCANNERS_ENABLED")
+	}
 
 	return nil
 }

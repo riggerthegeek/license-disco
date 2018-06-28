@@ -9,7 +9,8 @@ import (
 type Package interface {
 	Enabled(cmd *cobra.Command) bool
 	Flags() []common.Flag
-	Scan(path string) (error, *string)
+	Name() string
+	Scan(path string) (error, []common.Dependency)
 }
 
 func LoadPackages() []Package {
