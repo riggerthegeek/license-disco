@@ -31,12 +31,6 @@
   version = "v1.0"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/kyoh86/go-spdx"
-  packages = ["spdx"]
-  revision = "25a1b2254a839772de41b01bbef19b1d05812e99"
-
-[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "c3beff4c2358b44d0493c7dda585e7db7ff28ae6"
@@ -127,6 +121,10 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
+<<<<<<< HEAD
   inputs-digest = "ebc7f39a7ac338db65cf32a52121e6065ab040b32929e692aa8e3ebe813d14b8"
+=======
+  inputs-digest = "502ed800d6adfbf688650bd51cfa1f38d661360bdfd6a1d499b38bc4a37999fc"
+>>>>>>> parent of 8fa3794... Done a few more things
   solver-name = "gps-cdcl"
   solver-version = 1
